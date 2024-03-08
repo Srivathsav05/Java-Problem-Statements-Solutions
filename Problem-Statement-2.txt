@@ -1,0 +1,104 @@
+import java.util.Scanner;
+
+public class CurrencyConverter {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Welcome to the Currency Converter!");
+        System.out.println("Supported currencies:");
+        System.out.println("1. USD (US Dollar)");
+        System.out.println("2. EUR (Euro)");
+        System.out.println("3. GBP (British Pound)");
+        System.out.println("4. JPY (Japanese Yen)");
+
+        double[][] conversionRates = {
+            {1.0, 0.89, 0.76, 109.77},   
+            {1.12, 1.0, 0.85, 122.66},   
+            {1.32, 1.18, 1.0, 144.26},   
+            {0.0091, 0.0082, 0.0069, 1.0} 
+        };
+
+        boolean continueConversion = true;
+
+        while (continueConversion) {
+            System.out.print("\nEnter the amount you want to convert: ");
+            double amount = 0;
+            while (true) {
+                try {
+                    amount = Double.parseDouble(scanner.nextLine());
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.print("Please enter a valid numeric amount: ");
+                }
+            }
+
+            System.out.print("Enter the source currency (e.g., USD): ");
+            String sourceCurrency = scanner.nextLine().toUpperCase();
+
+            int sourceIndex = getCurrencyIndex(sourceCurrency);
+            if (sourceIndex == -1) {
+                System.out.println("Invalid source currency.");
+                continue;
+            }
+
+            System.out.println("Select the target currency:");
+            System.out.println("1. USD");
+            System.out.println("2. EUR");
+            System.out.println("3. GBP");
+            System.out.println("4. JPY");
+            System.out.print("Enter the number corresponding to the target currency: ");
+            int targetChoice = scanner.nextInt();
+            scanner.nextLine(); 
+
+            if (targetChoice < 1 || targetChoice > 4) {
+                System.out.println("Invalid target currency choice.");
+                continue;
+            }
+
+            int targetIndex = targetChoice - 1;
+
+            double convertedAmount = amount * conversionRates[targetIndex][sourceIndex];
+
+            System.out.printf("Converted %.2f %s to %.2f %s.%n", amount, sourceCurrency, convertedAmount, getCurrencyName(targetIndex));
+
+            System.out.print("\nDo you want to make another conversion? (yes/no): ");
+            String response = scanner.nextLine().toLowerCase();
+            if (!response.equals("yes")) {
+                continueConversion = false;
+            }
+        }
+
+        System.out.println("\nThank you for using the Currency Converter! Goodbye!");
+        scanner.close();
+    }
+
+    private static int getCurrencyIndex(String currency) {
+        switch (currency) {
+            case "USD":
+                return 0;
+            case "EUR":
+                return 1;
+            case "GBP":
+                return 2;
+            case "JPY":
+                return 3;
+            default:
+                return -1;
+        }
+    }
+
+    private static String getCurrencyName(int index) {
+        switch (index) {
+            case 0:
+                return "USD";
+            case 1:
+                return "EUR";
+            case 2:
+                return "GBP";
+            case 3:
+                return "JPY";
+            default:
+                return "";
+        }
+    }
+}

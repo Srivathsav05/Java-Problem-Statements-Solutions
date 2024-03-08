@@ -1,0 +1,36 @@
+import java.util.Scanner;
+import java.util.Random;
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
+        int mysterious = random.nextInt(101);
+
+        System.out.println("Welcome to the Mysterious Number Guesser!");
+        System.out.println("I've selected a number between 1 and 100. Can you guess it?");
+
+        int n;
+        boolean guessNum = false;
+
+        while (!guessNum) {
+            System.out.print("Enter your guess: ");
+            n = scanner.nextInt();
+
+            if (n == mysterious) {
+                System.out.println("Congratulations! You've guessed the correct number.");
+                guessNum = true;
+            } 
+            else {
+                
+                if (Math.abs(n - mysterious) <= 10) {
+                    System.out.println("You're getting close!");
+                }
+                else {
+                    System.out.println("You're far away!");
+                }
+            }
+        }
+
+        scanner.close();
+    }
+}
